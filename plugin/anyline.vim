@@ -41,21 +41,10 @@ endfunction
 
 set statusline= 
 set statusline+=%#C1#\ %{ModePasteBranch()}\  
-set statusline+=%#C2#\ %{&ro?'\ ':''}%t%m\  
-set statusline+=%#C3#%=%<
-set statusline+=%#C4#
+set statusline+=%#C2#\ %{&ro?'\ ':''}%t%m\  
+set statusline+=%#C3#%=%<
 set statusline+=%#C5#\ %{&ft!=''?&ft.'\ ·\ ':''}%{&fenc!=''?&fenc:&enc}[%{&ff}]\  
-set statusline+=%#C6#
 set statusline+=%#C7#\ %l,%c%V\ %p%%\  
-
-" set statusline= 
-" set statusline+=%#C1#\ %{ModePasteBranch()}\  
-" set statusline+=%#C2#\ %{&ro?'\ ':''}%t%m\  
-" set statusline+=%#C3#%=%<
-" set statusline+=%#C3#
-" set statusline+=%#C2#\ %{&ft!=''?&ft.'\ ·\ ':''}%{&fenc!=''?&fenc:&enc}[%{&ff}]\  
-" set statusline+=%#C2#
-" set statusline+=%#C1#\ %l,%c%V\ %p%%\  
 
 hi C1 ctermbg=231 ctermfg=21
 hi C2 ctermbg=21  ctermfg=231
