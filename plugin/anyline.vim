@@ -1,41 +1,61 @@
 " =============================================================================
-" Filename: plugin/gitbranch.vim
-" Author: itchyny
+" Filename: plugin/anyline.vim
+" Author: Aura <aura8897@gmail.com>
 " License: MIT License
-" Last Change: 2015/05/12 08:16:47.
 " =============================================================================
 
-if exists('g:loaded_gitbranch') || v:version < 700
+if exists('g:anyline_loaded') || v:version < 700
   finish
 endif
-let g:loaded_gitbranch = 1
+let g:anyline_loaded = 1
 
 let s:save_cpo = &cpo
 set cpo&vim
 
-augroup GitBranch
-  autocmd!
-  autocmd BufNewFile,BufReadPost * call gitbranch#detect(expand('<amatch>:p:h'))
-  autocmd BufEnter * call gitbranch#detect(expand('%:p:h'))
-augroup END
+let s:oldpath = 'o'
+let s:oldbranch = ''
+
+function! BranchName()
+	let l:newpath = expand('%:p:h')
+	if s:oldpath == l:newpath
+		return s:oldbranch
+	endif
+
+	let s:oldpath = l:newpath
+	let l:git = 'git -C '.l:newpath
+	let l:sha = system(l:git.' rev-parse HEAD 2> /dev/null')
+	if empty(l:sha)
+		let s:oldbranch = ''
+		return ''
+	endif
+
+	let l:b = system(l:git.' symbolic-ref --short -q HEAD || '.l:git.' describe --tags --exact-match HEAD 2> /dev/null')
+	if empty(l:b)
+		let s:oldbranch = ' ·  '.l:sha[:6]
+	else
+		let s:oldbranch = ' ·  '.trim(l:b)
+	endif
+	return s:oldbranch
+endfunction
+
+let s:mode_map = {
+	\ 'n':      'NORMAL',
+	\ 'i':      'INSERT',
+	\ 'R':      'REPLACE',
+	\ 'v':      'VISUAL',
+	\ 'V':      'V-LINE',
+	\ "\<C-v>": 'V-BLOCK',
+	\ 'c':      'COMMAND',
+	\ 's':      'SELECT',
+	\ 'S':      'S-LINE',
+	\ "\<C-s>": 'S-BLOCK',
+	\ 't':      'TERMINAL'
+	\ }
 
 function! ModePasteBranch()
-	let l:mode_map = {
-			\ 'n':      'NORMAL',
-			\ 'i':      'INSERT',
-			\ 'R':      'REPLACE',
-			\ 'v':      'VISUAL',
-			\ 'V':      'V-LINE',
-			\ "\<C-v>": 'V-BLOCK',
-			\ 'c':      'COMMAND',
-			\ 's':      'SELECT',
-			\ 'S':      'S-LINE',
-			\ "\<C-s>": 'S-BLOCK',
-			\ 't':      'TERMINAL'
-			\ }
-	let l:mpb  = get(l:mode_map, mode(), '')
+	let l:mpb  = get(s:mode_map, mode(), '')
 	let l:mpb .= &paste ? ' · PASTE' : ''
-	let l:mpb .= g:gitbranch ? (' ·  ' . gitbranch#name()) : ''
+	let l:mpb .= BranchName()
 	return l:mpb
 endfunction
 
