@@ -23,7 +23,7 @@ function! BranchName()
 
 	let s:oldpath = l:newpath
 	let l:git = 'git -C '.l:newpath
-	let l:sha = system(l:git.' rev-parse HEAD 2> /dev/null')
+	let l:sha = system(l:git.' rev-parse --short HEAD 2> /dev/null')
 	if empty(l:sha)
 		let s:oldbranch = ''
 		return ''
@@ -31,10 +31,9 @@ function! BranchName()
 
 	let l:b = system(l:git.' symbolic-ref --short -q HEAD || '.l:git.' describe --tags --exact-match HEAD 2> /dev/null')
 	if empty(l:b)
-		let s:oldbranch = ' ·  '.l:sha[:6]
-	else
-		let s:oldbranch = ' ·  '.trim(l:b)
+		let l:b = l:sha
 	endif
+	let s:oldbranch = ' ·  '.trim(l:b)
 	return s:oldbranch
 endfunction
 
