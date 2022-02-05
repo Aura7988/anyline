@@ -1,0 +1,1 @@
+A customized Neovim statusline.
