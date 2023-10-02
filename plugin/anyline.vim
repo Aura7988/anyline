@@ -48,10 +48,11 @@ function ATabLine() abort
 	let ct = tabpagenr()
 	let lt = tabpagenr('$')
 	for i in range(1, lt)
-		let tn = ' ' .. i .. ' · ' .. fnamemodify(bufname(tabpagebuflist(i)[tabpagewinnr(i) - 1]), ':t') .. ' '
-		let tal ..= ct == i ? '%#C5#' .. tn .. '%#C7#' : tn
+		" let tn = ' ╰' .. i .. ' ' .. fnamemodify(bufname(tabpagebuflist(i)[tabpagewinnr(i) - 1]), ':t') .. ' '
+		let tn = ' └' .. i .. ' ' .. fnamemodify(bufname(tabpagebuflist(i)[tabpagewinnr(i) - 1]), ':t') .. ' '
+		let tal ..= ct == i ? '%#C8#' .. tn .. '%#C7#' : tn
 	endfor
-	return tal .. '%=%<%#C0# ' .. lt .. ' TGs '
+	return tal
 endfunction
 
 " 107 152 222 b #6B98DE
@@ -63,7 +64,8 @@ hi C3 guibg=#78AE72 guifg=White
 hi C4 guifg=#78AE72 guibg=LightGray
 hi C5 guibg=LightGray guifg=Black
 hi C6 guibg=#6B98DE guifg=LightGray
-hi C7 guibg=LightGray guifg=DarkGray
+hi C7 guibg=NONE guifg=LightGray
+hi C8 guibg=NONE guifg=Orange
 
 set statusline=%!AStatusLine()
 set tabline=%!ATabLine()
