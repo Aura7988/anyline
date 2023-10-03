@@ -46,9 +46,7 @@ endfunction
 function ATabLine() abort
 	let tal = '%#C7#'
 	let ct = tabpagenr()
-	let lt = tabpagenr('$')
-	for i in range(1, lt)
-		" let tn = ' ╰' .. i .. ' ' .. fnamemodify(bufname(tabpagebuflist(i)[tabpagewinnr(i) - 1]), ':t') .. ' '
+	for i in range(1, tabpagenr('$'))
 		let tn = ' └' .. i .. ' ' .. fnamemodify(bufname(tabpagebuflist(i)[tabpagewinnr(i) - 1]), ':t') .. ' '
 		let tal ..= ct == i ? '%#C8#' .. tn .. '%#C7#' : tn
 	endfor
