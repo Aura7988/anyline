@@ -23,14 +23,11 @@ let s:mode_map = {
 
 function AStatusLine() abort
 	let stl = '%#C0# ' .. get(s:mode_map, mode(), '') .. (&paste ? ' · PASTE' : '')
-	let l:b = get(b:, 'gitsigns_head', '')
+	let l:b = FugitiveStatusline()
 	if empty(l:b)
 		let stl ..= ' %#C1#'
 	else
-		let l:vcs = '  ' .. l:b
-		let l:gs = get(b:, 'gitsigns_status', '')
-		if len(l:gs) | let l:vcs ..= ' ' .. l:gs | endif
-		let stl ..= ' %#C2#%#C3#' .. l:vcs .. ' %#C4#'
+		let stl ..= ' %#C2#%#C3#  ' .. l:b .. ' %#C4#'
 	endif
 	let stl ..= "%#C5# %{&ro?' ':''}%t%m "
 	let info = get(b:, 'coc_diagnostic_info', {})
