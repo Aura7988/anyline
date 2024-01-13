@@ -64,3 +64,47 @@ hi C8 guibg=NONE guifg=Orange
 
 set statusline=%!AStatusLine()
 set tabline=%!ATabLine()
+
+noremap!      <C-a> <Home>
+inoremap <C-g><C-a> <C-a>
+cnoremap <C-x><C-a> <C-a>
+inoremap      <C-e> <End>
+inoremap <C-g><C-e> <C-e>
+noremap!      <C-b> <Left>
+noremap!      <C-f> <Right>
+inoremap <C-g><C-f> <C-f>
+cnoremap <C-x><C-f> <C-f>
+noremap!      <C-d> <Del>
+inoremap <C-g><C-d> <C-d>
+cnoremap <C-x><C-d> <C-d>
+
+inoremap <C-g><C-t> <C-t>
+function! s:transposechars(m) abort
+	if a:m == 'c' && getcmdtype() =~# '[?/]' | return "\<C-t>" | endif
+	let res = a:m == 'c' ? ["\<C-f>", "\<C-c>", getcmdpos(), strlen(getcmdline())] : ["\<Esc>", "", col('.'), strlen(getline('.'))]
+	if res[2] == 1 || res[3] == 1 | return '' | endif
+	let op = 'Xpa'
+	if a:m == 'i' && res[2] <= res[3] | let op = 'xpa' | endif
+	return res[0] . op . res[1]
+endfunction
+noremap! <expr> <C-t> <SID>transposechars(mode())
+
+function! s:transposewords(m) abort
+	let res = a:m == 'n' ? ["", "3xw", getline('.')[col('.')-1]] : (a:m == 'c' ? ["\<C-f>", "c3l\<S-Right>\<C-c>", getcmdline()[getcmdpos()-2]] : ["\<Esc>", "c3l\<S-Right>", getline('.')[col('.')-2]])
+	return res[0] . (res[2] =~# '\s' ? 'b' : 'gew') . "cw x\<Esc>bgPix\<Esc>dewpbh" . res[1]
+endfunction
+noremap! <expr> <M-t> <SID>transposewords(mode())
+nnoremap <expr> <M-t> <SID>transposewords('n')
+
+noremap! <M-b> <S-Left>
+noremap! <M-f> <S-Right>
+noremap! <M-d> <S-Right><C-w>
+
+inoremap <M-c>       <Space><Esc>guevw~`[cl<S-Right>
+cnoremap <M-c> <C-f>i<Space><Esc>guevw~`[cl<S-Right><C-c>
+inoremap <M-l>       <Space><Esc>gue`[cl<S-Right>
+cnoremap <M-l> <C-f>i<Space><Esc>gue`[cl<S-Right><C-c>
+inoremap <M-u>       <Space><Esc>gUe`[cl<S-Right>
+cnoremap <M-u> <C-f>i<Space><Esc>gUe`[cl<S-Right><C-c>
+inoremap <M-\>       <Space><Esc>diwi
+cnoremap <M-\> <C-f>i<Space><Esc>diwi<C-c>
