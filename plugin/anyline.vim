@@ -65,20 +65,16 @@ hi C8 guibg=NONE guifg=Orange
 set statusline=%!AStatusLine()
 set tabline=%!ATabLine()
 
-noremap!      <C-a> <Home>
-inoremap <C-g><C-a> <C-a>
-cnoremap <C-x><C-a> <C-a>
-inoremap      <C-e> <End>
-inoremap <C-g><C-e> <C-e>
-noremap!      <C-b> <Left>
-noremap!      <C-f> <Right>
-inoremap <C-g><C-f> <C-f>
-cnoremap <C-x><C-f> <C-f>
-noremap!      <C-d> <Del>
-inoremap <C-g><C-d> <C-d>
-cnoremap <C-x><C-d> <C-d>
+noremap! <C-a>  <Home>
+noremap! <C-x>a <C-a>
+inoremap <C-e>  <End>
+inoremap <C-x>e <C-e>
+noremap! <C-b>  <Left>
+noremap! <C-f>  <Right>
+noremap! <C-x>f <C-f>
+noremap! <C-d>  <Del>
+noremap! <C-x>d <C-d>
 
-inoremap <C-g><C-t> <C-t>
 function! s:transposechars(m) abort
 	if a:m == 'c' && getcmdtype() =~# '[?/]' | return "\<C-t>" | endif
 	let res = a:m == 'c' ? ["\<C-f>", "\<C-c>", getcmdpos(), strlen(getcmdline())] : ["\<Esc>", "", col('.'), strlen(getline('.'))]
@@ -88,6 +84,7 @@ function! s:transposechars(m) abort
 	return res[0] . op . res[1]
 endfunction
 noremap! <expr> <C-t> <SID>transposechars(mode())
+inoremap <C-x>t <C-t>
 
 function! s:transposewords(m) abort
 	let res = a:m == 'n' ? ["", "3xw", getline('.')[col('.')-1]] : (a:m == 'c' ? ["\<C-f>", "c3l\<S-Right>\<C-c>", getcmdline()[getcmdpos()-2]] : ["\<Esc>", "c3l\<S-Right>", getline('.')[col('.')-2]])
