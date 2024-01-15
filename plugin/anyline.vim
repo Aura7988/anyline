@@ -87,8 +87,8 @@ noremap! <expr> <C-t> <SID>transposechars(mode())
 inoremap <C-x>t <C-t>
 
 function! s:transposewords(m) abort
-	let res = a:m == 'n' ? ["", "3xw", getline('.')[col('.')-1]] : (a:m == 'c' ? ["\<C-f>", "c3l\<S-Right>\<C-c>", getcmdline()[getcmdpos()-2]] : ["\<Esc>", "c3l\<S-Right>", getline('.')[col('.')-2]])
-	return res[0] . (res[2] =~# '\s' ? 'b' : 'gew') . "cw x\<Esc>bgPix\<Esc>dewpbh" . res[1]
+	let res = a:m == 'n' ? ["", "xw", getline('.')[col('.')-1]] : (a:m == 'c' ? ["\<C-f>", "c\<S-Right>\<C-c>", getcmdline()[getcmdpos()-2]] : ["\<Esc>", "c\<S-Right>", getline('.')[col('.')-2]])
+	return res[0] . (res[2] =~# '\s' ? 'b' : 'gew') . "cw x\<Esc>bgPix\<Esc>dewp`[v2h" . res[1]
 endfunction
 noremap! <expr> <M-t> <SID>transposewords(mode())
 nnoremap <expr> <M-t> <SID>transposewords('n')
