@@ -79,16 +79,21 @@ function! s:transposechars(m) abort
 	if a:m == 'c' && getcmdtype() =~# '[?/]' | return "\<C-t>" | endif
 	let res = a:m == 'c' ? ["\<C-f>", "\<C-c>", getcmdpos(), strlen(getcmdline())] : ["\<Esc>", "", col('.'), strlen(getline('.'))]
 	if res[2] == 1 || res[3] == 1 | return '' | endif
-	let op = 'Xpa'
-	if a:m == 'i' && res[2] <= res[3] | let op = 'xpa' | endif
+	let op = (a:m == 'i' && res[2] <= res[3]) ? 'xpa' : 'Xpa'
 	return res[0] . op . res[1]
 endfunction
 noremap! <expr> <C-t> <SID>transposechars(mode())
 inoremap <C-x>t <C-t>
 
 function! s:transposewords(m) abort
-	let res = a:m == 'n' ? ["", "xw", getline('.')[col('.')-1]] : (a:m == 'c' ? ["\<C-f>", "c\<S-Right>\<C-c>", getcmdline()[getcmdpos()-2]] : ["\<Esc>", "c\<S-Right>", getline('.')[col('.')-2]])
-	return res[0] . (res[2] =~# '\s' ? 'b' : 'gew') . "cw x\<Esc>bgPix\<Esc>dewp`[v2h" . res[1]
+	let in = a:m == 'c' ? [getcmdline(), getcmdpos()-1] : [getline('.'), col('.')-1]
+	let l = 'l'
+	if strlen(in[0]) == in[1] | let in[1] -= 1 | let l = '' | endif
+	let op = (in[0][in[1]] =~# '\s' ? 'b' : 'gew') . "cw x\<Esc>bgPix\<Esc>dewp`[v2h"
+	if a:m == 'n' | return op . "xw" | endif
+	let op .= "c\<S-Right>"
+	if a:m == 'i' | return "\<Esc>" . l . op | endif
+	return "\<C-f>" . op . "\<C-c>"
 endfunction
 noremap! <expr> <M-t> <SID>transposewords(mode())
 nnoremap <expr> <M-t> <SID>transposewords('n')
