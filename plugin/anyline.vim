@@ -97,11 +97,11 @@ noremap! <M-b> <S-Left>
 noremap! <M-f> <S-Right>
 noremap! <M-d> <S-Right><C-w>
 
-inoremap <M-c>       <Space><Esc>guevw~`[cl<S-Right>
-cnoremap <M-c> <C-f>i<Space><Esc>guevw~`[cl<S-Right><C-c>
-inoremap <M-l>       <Space><Esc>gue`[cl<S-Right>
-cnoremap <M-l> <C-f>i<Space><Esc>gue`[cl<S-Right><C-c>
-inoremap <M-u>       <Space><Esc>gUe`[cl<S-Right>
-cnoremap <M-u> <C-f>i<Space><Esc>gUe`[cl<S-Right><C-c>
-inoremap <M-\>       <Space><Esc>diwi
-cnoremap <M-\> <C-f>i<Space><Esc>diwi<C-c>
+inoremap <M-c>       <Space><Esc>guevw~xhea
+cnoremap <M-c> <C-f>i<Space><Esc>guevw~xhea<C-c>
+inoremap <M-l>       <Space><Esc>guexhea
+cnoremap <M-l> <C-f>i<Space><Esc>guexhea<C-c>
+inoremap <M-u>       <Space><Esc>gUexhea
+cnoremap <M-u> <C-f>i<Space><Esc>gUexhea<C-c>
+inoremap <M-\>       <Space><Esc>ciw
+cnoremap <M-\> <C-f>i<Space><Esc>ciw<C-c>
