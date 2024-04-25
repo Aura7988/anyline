@@ -22,7 +22,7 @@ let s:mode_map = {
 	\ }
 
 function AStatusLine() abort
-	let stl = '%#C0# ' .. get(s:mode_map, mode(), '') .. (&paste ? ' · PASTE' : '')
+	let stl = '%#C0# ' .. get(s:mode_map, mode(), '')
 	let l:b = FugitiveStatusline()
 	if empty(l:b)
 		let stl ..= ' %#C1#'
