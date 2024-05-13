@@ -76,10 +76,11 @@ noremap! <C-d>  <Del>
 noremap! <C-x>d <C-d>
 
 function! s:transposechars(m) abort
-	if a:m == 'c' && getcmdtype() =~# '[?/]' | return "\<C-t>" | endif
-	let res = a:m == 'c' ? ["\<C-f>", "\<C-c>", getcmdpos(), strlen(getcmdline())] : ["\<Esc>", "", col('.'), strlen(getline('.'))]
+	let cm = a:m == 'c'
+	if cm && getcmdtype() =~# '[?/]' | return "\<C-t>" | endif
+	let res = cm ? ["\<C-f>", "\<C-c>", getcmdpos(), strlen(getcmdline())] : ["\<Esc>", "", col('.'), strlen(getline('.'))]
 	if res[2] == 1 || res[3] == 1 | return '' | endif
-	let op = (a:m == 'i' && res[2] <= res[3]) ? 'xpa' : 'Xpa'
+	let op = res[2] > res[3] ? (cm ? 'hXpa' : 'Xpa') : (cm ? 'Xpa' : 'xpa')
 	return res[0] . op . res[1]
 endfunction
 noremap! <expr> <C-t> <SID>transposechars(mode())
@@ -93,7 +94,7 @@ function! s:transposewords(m) abort
 	if a:m == 'n' | return op . "xw" | endif
 	let op .= "c\<S-Right>"
 	if a:m == 'i' | return "\<Esc>" . l . op | endif
-	return "\<C-f>" . op . "\<C-c>"
+	return "\<C-f>h" . op . "\<C-c>"
 endfunction
 noremap! <expr> <M-t> <SID>transposewords(mode())
 nnoremap <expr> <M-t> <SID>transposewords('n')
