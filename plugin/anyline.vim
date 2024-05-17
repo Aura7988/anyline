@@ -34,7 +34,7 @@ function AStatusLine() abort
 	if len(info)
 		let msgs = []
 		if get(info, 'error', 0) | call add(msgs, '' . info['error']) | endif
-		if get(info, 'warning', 0) | call add(msgs, '' . info['warning']) | endif
+		if get(info, 'warning', 0) | call add(msgs, '' . info['warning']) | endif
 		let stl ..= join(msgs, ' ')
 	endif
 	return stl .. "%=%<%{&fenc}[%{&ff}] %#C6#%#C0# %l,%c%V %p%% "
