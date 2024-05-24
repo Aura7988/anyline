@@ -64,7 +64,7 @@ hi C8 guibg=NONE guifg=Orange
 
 set statusline=%!AStatusLine()
 set tabline=%!ATabLine()
-au TermOpen * setlocal nornu nonu statusline=%#C5#⑆\ %{b:term_title}
+au TermOpen * setlocal nornu nonu scrollback=100000 statusline=%#C5#⑆\ %{b:term_title}
 
 noremap! <C-a>  <Home>
 noremap! <C-x>a <C-a>
