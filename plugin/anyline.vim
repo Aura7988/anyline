@@ -33,7 +33,7 @@ function AStatusLine() abort
 	else
 		let stl ..= ' %#C2#%#C3#  ' .. l:b .. ' %#C4#'
 	endif
-	let stl ..= "%#C5# %{&ro?' ':''}%t%m "
+	let stl ..= "%#C5# %{&ro?'󰗚 ':''}%t %m "
 	let info = get(b:, 'coc_diagnostic_info', {})
 	if len(info)
 		let msgs = []
