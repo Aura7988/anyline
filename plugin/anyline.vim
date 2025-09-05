@@ -48,7 +48,8 @@ function ATabLine() abort
 	let tal = '%#C7#'
 	let ct = tabpagenr()
 	for i in range(1, tabpagenr('$'))
-		let tn = '%'..i..'T §'..i..' '..pathshorten(fnamemodify(bufname(tabpagebuflist(i)[tabpagewinnr(i) - 1]), ':~:.'))..' '
+		let n = substitute(bufname(tabpagebuflist(i)[tabpagewinnr(i) - 1]), 'term://.\{-}//\(.\{-}\):.*', 'Ṯ\1', '')
+		let tn = '%'..i..'T §'..i..' '..pathshorten(fnamemodify(n, ':~:.'))..' '
 		let tal ..= ct == i ? '%#C8#' .. tn .. '%#C7#' : tn
 	endfor
 	return tal
