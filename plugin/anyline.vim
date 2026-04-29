@@ -37,8 +37,8 @@ function AStatusLine() abort
 	let info = get(b:, 'coc_diagnostic_info', {})
 	if len(info)
 		let msgs = []
-		if get(info, 'error', 0) | call add(msgs, '' . info['error']) | endif
-		if get(info, 'warning', 0) | call add(msgs, '' . info['warning']) | endif
+		if get(info, 'error', 0) | call add(msgs, ' ' . info['error']) | endif
+		if get(info, 'warning', 0) | call add(msgs, ' ' . info['warning']) | endif
 		let stl ..= join(msgs, ' ')
 	endif
 	return stl .. "%=%<%{&fenc}[%{&ff}] %#C6#%#C0# %l,%c%V %p%% "
@@ -69,7 +69,7 @@ hi C8 guibg=NONE guifg=Orange
 
 set statusline=%!AStatusLine()
 set tabline=%!ATabLine()
-au TermOpen * setlocal nornu nonu scrollback=100000 statusline=%#C5#⑆\ %{b:term_title}
+" au TermOpen * setlocal nornu nonu scrollback=100000 statusline=%#C5#⑆\ %{b:term_title}
 
 noremap! <C-a>  <Home>
 noremap! <C-x>a <C-a>
