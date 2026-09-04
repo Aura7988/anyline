@@ -80,40 +80,6 @@ noremap! <C-f>  <Right>
 noremap! <C-x>f <C-f>
 noremap! <C-d>  <Del>
 noremap! <C-x>d <C-d>
-
-function! s:transposechars(m) abort
-	let cm = a:m == 'c'
-	if cm && getcmdtype() =~# '[?/]' | return "\<C-t>" | endif
-	let res = cm ? ["\<C-f>", "\<C-c>", getcmdpos(), strlen(getcmdline())] : ["\<Esc>", "", col('.'), strlen(getline('.'))]
-	if res[2] == 1 || res[3] == 1 | return '' | endif
-	let op = res[2] > res[3] ? (cm ? 'hXpa' : 'Xpa') : (cm ? 'Xpa' : 'xpa')
-	return res[0] . op . res[1]
-endfunction
-noremap! <expr> <C-t> <SID>transposechars(mode())
-inoremap <C-x>t <C-t>
-
-function! s:transposewords(m) abort
-	let in = a:m == 'c' ? [getcmdline(), getcmdpos()-1] : [getline('.'), col('.')-1]
-	let l = 'l'
-	if strlen(in[0]) == in[1] | let in[1] -= 1 | let l = '' | endif
-	let op = (in[0][in[1]] =~# '\s' ? 'b' : 'gew') . "cw x\<Esc>bgPix\<Esc>dewp`[v2h"
-	if a:m == 'n' | return op . "xw" | endif
-	let op .= "c\<S-Right>"
-	if a:m == 'i' | return "\<Esc>" . l . op | endif
-	return "\<C-f>h" . op . "\<C-c>"
-endfunction
-noremap! <expr> <M-t> <SID>transposewords(mode())
-nnoremap <expr> <M-t> <SID>transposewords('n')
-
 noremap! <M-b> <S-Left>
 noremap! <M-f> <S-Right>
 noremap! <M-d> <S-Right><C-w>
-
-inoremap <M-c>       <Space><Esc>guevw~xhea
-cnoremap <M-c> <C-f>i<Space><Esc>guevw~xhea<C-c>
-inoremap <M-l>       <Space><Esc>guexhea
-cnoremap <M-l> <C-f>i<Space><Esc>guexhea<C-c>
-inoremap <M-u>       <Space><Esc>gUexhea
-cnoremap <M-u> <C-f>i<Space><Esc>gUexhea<C-c>
-inoremap <M-\>       <Space><Esc>ciw
-cnoremap <M-\> <C-f>i<Space><Esc>ciw<C-c>
